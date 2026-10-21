@@ -5,6 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MotorCAN Tool</title>
+    <script>
+      // Apply the theme before first paint (saved choice, else the OS setting); see ThemeToggle.vue
+      (function () {
+        var t
+        try { t = localStorage.getItem('motorcan.theme') } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.dataset.theme = t
+      })()
+    </script>
   </head>
   <body>
     <div id="app"></div>

@@ -6,6 +6,7 @@ import CanSendPanel from '@/components/CanSendPanel.vue'
 import DeviceSelector from '@/components/DeviceSelector.vue'
 import StatusBar from '@/components/StatusBar.vue'
 import ResizeHandle from '@/components/ResizeHandle.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 import { ref } from 'vue'
 
 // ── Resizable panels ─────────────────────────────────────────────────────────
@@ -59,7 +60,7 @@ function onSendMove(delta: number) {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen bg-bg-primary text-slate-200 overflow-hidden">
+  <div class="flex flex-col h-screen bg-bg-primary text-fg overflow-hidden">
 
     <!-- Top Navbar -->
     <header class="h-12 flex items-center px-4 gap-4 border-b border-border bg-bg-secondary shrink-0">
@@ -73,12 +74,13 @@ function onSendMove(delta: number) {
           <line x1="2" y1="10" x2="6" y2="10" stroke="#f97316" stroke-width="1.5"/>
           <line x1="14" y1="10" x2="18" y2="10" stroke="#f97316" stroke-width="1.5"/>
         </svg>
-        <span class="text-sm font-bold text-orange-400 tracking-wider">MotorCAN</span>
-        <span class="text-xs text-slate-600 hidden sm:inline">/ Motor MCU Debug Tool</span>
+        <span class="text-sm font-bold text-accent-fg tracking-wider">MotorCAN</span>
+        <span class="text-xs text-fg-faint hidden sm:inline">/ Motor MCU Debug Tool</span>
       </div>
 
-      <div class="ml-auto">
+      <div class="ml-auto flex items-center gap-3">
         <DeviceSelector />
+        <ThemeToggle />
       </div>
     </header>
 
@@ -92,7 +94,7 @@ function onSendMove(delta: number) {
       >
         <!-- DBC Upload -->
         <div class="border-b border-border shrink-0">
-          <div class="px-3 pt-2 pb-0 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">
+          <div class="px-3 pt-2 pb-0 text-[10px] text-fg-muted uppercase tracking-widest font-semibold">
             DBC File
           </div>
           <DbcUploader />
@@ -100,7 +102,7 @@ function onSendMove(delta: number) {
 
         <!-- Message Tree -->
         <div class="flex-1 overflow-hidden flex flex-col">
-          <div class="px-3 py-2 text-[10px] text-slate-500 uppercase tracking-widest font-semibold border-b border-border shrink-0">
+          <div class="px-3 py-2 text-[10px] text-fg-muted uppercase tracking-widest font-semibold border-b border-border shrink-0">
             Messages
           </div>
           <MessageTree />
@@ -136,7 +138,7 @@ function onSendMove(delta: number) {
           class="flex flex-col overflow-hidden shrink-0"
           :style="{ height: `${sendHeight}px`, minHeight: `${SEND_MIN}px`, maxHeight: `calc(100% - ${MONITOR_MIN}px)` }"
         >
-          <div class="px-3 py-2 text-[10px] text-slate-500 uppercase tracking-widest font-semibold border-b border-border shrink-0">
+          <div class="px-3 py-2 text-[10px] text-fg-muted uppercase tracking-widest font-semibold border-b border-border shrink-0">
             Signal Editor & Send
           </div>
           <CanSendPanel class="flex-1 overflow-hidden" />

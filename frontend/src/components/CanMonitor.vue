@@ -47,27 +47,27 @@ function formatSignals(signals: Record<string, number | string>) {
   <div class="flex flex-col h-full overflow-hidden">
     <!-- Toolbar -->
     <div class="flex items-center gap-2 px-3 py-2 border-b border-border shrink-0">
-      <span class="text-xs font-semibold text-slate-300">CAN Monitor</span>
+      <span class="text-xs font-semibold text-fg-soft">CAN Monitor</span>
 
       <input
         v-model="canStore.filterText"
         placeholder="Filter by ID / Name..."
-        class="ml-2 flex-1 max-w-xs bg-bg-primary border border-border rounded px-2 py-0.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-orange-500"
+        class="ml-2 flex-1 max-w-xs bg-bg-primary border border-border rounded px-2 py-0.5 text-xs text-fg placeholder-fg-faint focus:outline-none focus:border-orange-500"
       />
 
       <div class="ml-auto flex items-center gap-2">
         <button
           class="px-2 py-0.5 text-xs rounded border transition-colors"
           :class="canStore.paused
-            ? 'border-green-500 text-green-400 hover:bg-green-500/10'
-            : 'border-yellow-500 text-yellow-400 hover:bg-yellow-500/10'"
+            ? 'border-green-500 text-success-fg hover:bg-green-500/10'
+            : 'border-yellow-500 text-warning-fg hover:bg-yellow-500/10'"
           @click="canStore.togglePause"
         >
           {{ canStore.paused ? '▶ Resume' : '⏸ Pause' }}
         </button>
 
         <button
-          class="px-2 py-0.5 text-xs rounded border border-slate-600 text-slate-400 hover:bg-slate-700 transition-colors"
+          class="px-2 py-0.5 text-xs rounded border border-border-strong text-fg-secondary hover:bg-bg-active transition-colors"
           @click="canStore.clearFrames"
         >
           Clear
@@ -76,7 +76,7 @@ function formatSignals(signals: Record<string, number | string>) {
     </div>
 
     <!-- Table header -->
-    <div class="grid text-[10px] text-slate-500 uppercase tracking-wider px-3 py-1.5 border-b border-border shrink-0"
+    <div class="grid text-[10px] text-fg-muted uppercase tracking-wider px-3 py-1.5 border-b border-border shrink-0"
          style="grid-template-columns: 1fr 1.2fr 1.5fr 1fr 1fr 3fr">
       <span>Time</span>
       <span>ID</span>
@@ -98,22 +98,22 @@ function formatSignals(signals: Record<string, number | string>) {
           'flash-tx': frame.direction === 'tx',
         }"
       >
-        <span class="text-slate-500">{{ formatTime(frame.timestamp) }}</span>
-        <span class="text-slate-300">{{ frame.id_hex }}</span>
-        <span class="text-slate-400 truncate" :title="frame.name ?? ''">{{ frame.name ?? '—' }}</span>
+        <span class="text-fg-muted">{{ formatTime(frame.timestamp) }}</span>
+        <span class="text-fg-soft">{{ frame.id_hex }}</span>
+        <span class="text-fg-secondary truncate" :title="frame.name ?? ''">{{ frame.name ?? '—' }}</span>
         <span
           class="font-semibold"
-          :class="frame.direction === 'rx' ? 'text-blue-400' : 'text-orange-400'"
+          :class="frame.direction === 'rx' ? 'text-rx-fg' : 'text-accent-fg'"
         >
           {{ frame.direction.toUpperCase() }}
         </span>
-        <span class="text-green-400 tracking-widest text-[10px]">{{ frame.raw_hex }}</span>
-        <span class="text-slate-400 truncate text-[10px]" :title="formatSignals(frame.signals)">
+        <span class="text-success-fg tracking-widest text-[10px]">{{ frame.raw_hex }}</span>
+        <span class="text-fg-secondary truncate text-[10px]" :title="formatSignals(frame.signals)">
           {{ formatSignals(frame.signals) }}
         </span>
       </div>
 
-      <div v-if="frames.length === 0" class="text-center text-slate-600 text-xs py-8">
+      <div v-if="frames.length === 0" class="text-center text-fg-faint text-xs py-8">
         {{ canStore.status.connected ? 'Waiting for CAN frames...' : 'Connect to CAN bus to start monitoring' }}
       </div>
     </div>

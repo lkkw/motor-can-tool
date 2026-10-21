@@ -33,13 +33,13 @@ function selectAndExpand(msg: MessageSchema) {
       <input
         v-model="search"
         placeholder="Search messages..."
-        class="w-full bg-bg-primary border border-border rounded px-2 py-1 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-orange-500"
+        class="w-full bg-bg-primary border border-border rounded px-2 py-1 text-xs text-fg placeholder-fg-faint focus:outline-none focus:border-orange-500"
       />
     </div>
 
     <!-- Message list -->
     <div class="flex-1 overflow-y-auto">
-      <div v-if="dbcStore.messages.length === 0" class="text-slate-600 text-xs text-center py-8">
+      <div v-if="dbcStore.messages.length === 0" class="text-fg-faint text-xs text-center py-8">
         No messages loaded
       </div>
 
@@ -51,17 +51,17 @@ function selectAndExpand(msg: MessageSchema) {
           @click="selectAndExpand(msg)"
         >
           <span
-            class="text-[10px] text-slate-500 select-none w-3"
+            class="text-[10px] text-fg-muted select-none w-3"
             @click.stop="toggleExpand(msg.id)"
           >
             {{ expandedIds.has(msg.id) ? '▼' : '▶' }}
           </span>
           <div class="flex-1 min-w-0">
-            <div class="text-xs font-medium text-slate-200 truncate">{{ msg.name }}</div>
-            <div class="text-[10px] text-slate-500">{{ msg.id_hex }} · {{ msg.length }}B · {{ msg.signals.length }} signals</div>
+            <div class="text-xs font-medium text-fg truncate">{{ msg.name }}</div>
+            <div class="text-[10px] text-fg-muted">{{ msg.id_hex }} · {{ msg.length }}B · {{ msg.signals.length }} signals</div>
           </div>
           <button
-            class="shrink-0 px-2 py-0.5 text-[10px] rounded border border-orange-500/50 text-orange-400 hover:bg-orange-500/20 transition-colors"
+            class="shrink-0 px-2 py-0.5 text-[10px] rounded border border-orange-500/50 text-accent-fg hover:bg-orange-500/20 transition-colors"
             @click.stop="dbcStore.selectMessage(msg)"
           >
             Send
@@ -76,10 +76,10 @@ function selectAndExpand(msg: MessageSchema) {
             class="pl-8 pr-3 py-1.5 flex items-center gap-2 border-b border-bg-secondary bg-bg-sunken"
           >
             <div class="flex-1 min-w-0">
-              <span class="text-[11px] text-slate-300">{{ sig.name }}</span>
-              <span v-if="sig.unit" class="text-[10px] text-slate-600 ml-1">[{{ sig.unit }}]</span>
+              <span class="text-[11px] text-fg-soft">{{ sig.name }}</span>
+              <span v-if="sig.unit" class="text-[10px] text-fg-faint ml-1">[{{ sig.unit }}]</span>
             </div>
-            <div class="text-[10px] text-slate-600 shrink-0">
+            <div class="text-[10px] text-fg-faint shrink-0">
               {{ sig.minimum ?? '?' }}..{{ sig.maximum ?? '?' }}
             </div>
           </div>

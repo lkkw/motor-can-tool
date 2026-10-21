@@ -58,14 +58,14 @@ function onInput(e: Event) {
     >
       <input type="file" accept=".dbc" class="hidden" @change="onInput" />
 
-      <div v-if="loading" class="text-orange-400 text-sm animate-pulse">Parsing DBC...</div>
+      <div v-if="loading" class="text-accent-fg text-sm animate-pulse">Parsing DBC...</div>
       <div v-else-if="dbcStore.filename" class="text-center">
-        <div class="text-xs text-green-400">✓ {{ dbcStore.filename }}</div>
-        <div class="text-xs text-slate-500 mt-0.5">{{ dbcStore.messages.length }} messages · click to reload</div>
+        <div class="text-xs text-success-fg">✓ {{ dbcStore.filename }}</div>
+        <div class="text-xs text-fg-muted mt-0.5">{{ dbcStore.messages.length }} messages · click to reload</div>
       </div>
       <div v-else class="text-center">
-        <div class="text-slate-400 text-xs">Drop .dbc file here</div>
-        <div class="text-slate-600 text-xs mt-0.5">or click to browse</div>
+        <div class="text-fg-secondary text-xs">Drop .dbc file here</div>
+        <div class="text-fg-faint text-xs mt-0.5">or click to browse</div>
       </div>
     </label>
   </div>

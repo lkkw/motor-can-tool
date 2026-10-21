@@ -1,31 +1,78 @@
 @import "tailwindcss";
 
+/* Dark theme (default). Utilities read these variables at runtime, so
+   :root[data-theme="light"] below can swap them without rebuilding classes. */
 @theme {
   --color-bg-primary: #0f1117;
   --color-bg-secondary: #1a1d27;
   --color-bg-card: #1e2130;
   --color-bg-hover: #252840;
   --color-bg-sunken: #181b26;
+  --color-bg-active: oklch(37.2% 0.044 257.287); /* slate-700 */
   --color-border: #2d3148;
+  --color-border-strong: oklch(44.6% 0.043 257.281); /* slate-600 */
   --color-accent: #f97316;
-  --color-accent-dim: #7c3a0e;
-  --color-success: #22c55e;
-  --color-error: #ef4444;
-  --color-warning: #eab308;
-  --color-text-primary: #e2e8f0;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #64748b;
-  --color-rx: #3b82f6;
-  --color-tx: #f97316;
+
+  /* Text, from strongest to faintest */
+  --color-fg: oklch(92.9% 0.013 255.508); /* slate-200 */
+  --color-fg-soft: oklch(86.9% 0.022 252.894); /* slate-300 */
+  --color-fg-secondary: oklch(70.4% 0.04 256.788); /* slate-400 */
+  --color-fg-muted: oklch(55.4% 0.046 257.417); /* slate-500 */
+  --color-fg-faint: oklch(44.6% 0.043 257.281); /* slate-600 */
+  --color-fg-ghost: oklch(37.2% 0.044 257.287); /* slate-700 */
+
+  /* Status text (readable on the theme background) */
+  --color-accent-fg: oklch(75% 0.183 55.934); /* orange-400 */
+  --color-success-fg: oklch(79.2% 0.209 151.711); /* green-400 */
+  --color-danger-fg: oklch(70.4% 0.191 22.216); /* red-400 */
+  --color-warning-fg: oklch(85.2% 0.199 91.936); /* yellow-400 */
+  --color-rx-fg: oklch(70.7% 0.165 254.624); /* blue-400 */
+}
+
+:root {
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-bg-primary: #f3f4f7;
+  --color-bg-secondary: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-bg-hover: #e9ecf3;
+  --color-bg-sunken: #eef0f4;
+  --color-bg-active: oklch(92.9% 0.013 255.508); /* slate-200 */
+  --color-border: #dde1e9;
+  --color-border-strong: oklch(86.9% 0.022 252.894); /* slate-300 */
+
+  --color-fg: oklch(27.9% 0.041 260.031); /* slate-800 */
+  --color-fg-soft: oklch(37.2% 0.044 257.287); /* slate-700 */
+  --color-fg-secondary: oklch(44.6% 0.043 257.281); /* slate-600 */
+  --color-fg-muted: oklch(50.5% 0.045 257.4); /* between slate-500 and -600, for >= 4.5:1 on bg-primary */
+  --color-fg-faint: oklch(70.4% 0.04 256.788); /* slate-400 */
+  --color-fg-ghost: oklch(86.9% 0.022 252.894); /* slate-300 */
+
+  --color-accent-fg: oklch(55.3% 0.195 38.402); /* orange-700 */
+  --color-success-fg: oklch(52.7% 0.154 150.069); /* green-700 */
+  --color-danger-fg: oklch(50.5% 0.213 27.518); /* red-700 */
+  --color-warning-fg: oklch(55.5% 0.163 48.998); /* amber-700 */
+  --color-rx-fg: oklch(54.6% 0.245 262.881); /* blue-600 */
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Briefly set by ThemeToggle so the whole page changes theme in one step */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
 body {
   background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
+  color: var(--color-fg);
   font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', ui-monospace, monospace;
   margin: 0;
 }
@@ -34,7 +81,7 @@ body {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-bg-secondary); }
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-fg-muted); }
 
 /* Highlight animation for new frames */
 @keyframes flash-rx {

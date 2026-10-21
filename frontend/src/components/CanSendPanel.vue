@@ -99,7 +99,7 @@ function getSignalValidation(sig: any, val: string) {
 <template>
   <div class="h-full flex flex-col overflow-hidden">
     <!-- Empty state -->
-    <div v-if="!dbcStore.selectedMessage" class="flex-1 flex items-center justify-center text-slate-600 text-sm">
+    <div v-if="!dbcStore.selectedMessage" class="flex-1 flex items-center justify-center text-fg-faint text-sm">
       Select a message from the left panel to send
     </div>
 
@@ -107,8 +107,8 @@ function getSignalValidation(sig: any, val: string) {
       <!-- Message header -->
       <div class="px-4 py-3 border-b border-border flex items-center gap-3 shrink-0">
         <div>
-          <div class="text-sm font-semibold text-orange-400">{{ dbcStore.selectedMessage.name }}</div>
-          <div class="text-xs text-slate-500">
+          <div class="text-sm font-semibold text-accent-fg">{{ dbcStore.selectedMessage.name }}</div>
+          <div class="text-xs text-fg-muted">
             {{ dbcStore.selectedMessage.id_hex }} · {{ dbcStore.selectedMessage.length }} bytes ·
             {{ dbcStore.selectedMessage.is_extended_id ? 'Extended' : 'Standard' }}
           </div>
@@ -116,10 +116,10 @@ function getSignalValidation(sig: any, val: string) {
         <div class="ml-auto flex items-center gap-2">
           <!-- Interval selector -->
           <div class="flex items-center gap-1.5">
-            <span class="text-xs text-slate-500">Interval</span>
+            <span class="text-xs text-fg-muted">Interval</span>
             <select
               v-model.number="intervalMs"
-              class="bg-bg-primary border border-border rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+              class="bg-bg-primary border border-border rounded px-2 py-1 text-xs text-fg focus:outline-none focus:border-orange-500"
               :disabled="!!activeTaskId"
             >
               <option :value="0">Once</option>
@@ -136,7 +136,7 @@ function getSignalValidation(sig: any, val: string) {
           <!-- Stop periodic -->
           <button
             v-if="activeTaskId"
-            class="px-3 py-1 text-xs rounded bg-red-500/20 border border-red-500 text-red-400 hover:bg-red-500/30 transition-colors"
+            class="px-3 py-1 text-xs rounded bg-red-500/20 border border-red-500 text-danger-fg hover:bg-red-500/30 transition-colors"
             :disabled="stopping"
             @click="handleStop"
           >
@@ -165,10 +165,10 @@ function getSignalValidation(sig: any, val: string) {
           <div class="flex items-start gap-3">
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-medium text-slate-200">{{ sig.name }}</span>
-                <span v-if="sig.unit" class="text-[10px] text-slate-600 bg-bg-primary px-1.5 rounded">{{ sig.unit }}</span>
+                <span class="text-xs font-medium text-fg">{{ sig.name }}</span>
+                <span v-if="sig.unit" class="text-[10px] text-fg-faint bg-bg-primary px-1.5 rounded">{{ sig.unit }}</span>
               </div>
-              <div class="text-[10px] text-slate-600">
+              <div class="text-[10px] text-fg-faint">
                 {{ sig.start_bit }}bit · {{ sig.length }}b · {{ sig.byte_order === 'little_endian' ? 'LE' : 'BE' }} ·
                 scale={{ sig.scale }} offset={{ sig.offset }}
                 <span v-if="sig.minimum !== null || sig.maximum !== null">
@@ -181,7 +181,7 @@ function getSignalValidation(sig: any, val: string) {
             <div v-if="sig.choices" class="w-36">
               <select
                 v-model="signalValues[sig.name]"
-                class="w-full bg-bg-primary border border-border rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-orange-500"
+                class="w-full bg-bg-primary border border-border rounded px-2 py-1 text-xs text-fg focus:outline-none focus:border-orange-500"
               >
                 <option v-for="(label, val) in sig.choices" :key="val" :value="val">
                   {{ val }} - {{ label }}
@@ -197,7 +197,7 @@ function getSignalValidation(sig: any, val: string) {
                 :min="sig.minimum ?? undefined"
                 :max="sig.maximum ?? undefined"
                 :step="sig.scale"
-                class="w-full bg-bg-primary rounded px-2 py-1 text-xs text-slate-200 focus:outline-none border transition-colors"
+                class="w-full bg-bg-primary rounded px-2 py-1 text-xs text-fg focus:outline-none border transition-colors"
                 :class="{
                   'border-red-500': getSignalValidation(sig, signalValues[sig.name] ?? '') === 'error',
                   'border-yellow-500': getSignalValidation(sig, signalValues[sig.name] ?? '') === 'warn',
