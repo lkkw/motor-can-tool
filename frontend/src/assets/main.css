@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0f1117;
+  --color-bg-secondary: #1a1d27;
+  --color-bg-card: #1e2130;
+  --color-bg-hover: #252840;
+  --color-bg-sunken: #181b26;
+  --color-border: #2d3148;
+  --color-accent: #f97316;
+  --color-accent-dim: #7c3a0e;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-warning: #eab308;
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-rx: #3b82f6;
+  --color-tx: #f97316;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', ui-monospace, monospace;
+  margin: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* Highlight animation for new frames */
+@keyframes flash-rx {
+  0% { background-color: rgba(59, 130, 246, 0.25); }
+  100% { background-color: transparent; }
+}
+@keyframes flash-tx {
+  0% { background-color: rgba(249, 115, 22, 0.25); }
+  100% { background-color: transparent; }
+}
+
+.flash-rx { animation: flash-rx 0.6s ease-out; }
+.flash-tx { animation: flash-tx 0.6s ease-out; }
