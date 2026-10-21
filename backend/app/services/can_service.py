@@ -8,6 +8,7 @@ from pathlib import Path
 import can
 
 from app.config import settings
+from app.drivers.chuangxin import ChuangxinBus
 from app.schemas.can import CanConnectRequest, CanFrameEvent, CanStatusResponse, PeriodicTaskInfo
 from app.services import dbc_service
 
@@ -132,6 +133,15 @@ def connect(cfg: CanConnectRequest) -> None:
         if cfg.interface == "zlgcan":
             _bus = _open_zlgcan(cfg)
             _tx_channel = cfg.channel_index
+        elif cfg.interface == "chuangxin":
+            # Opens only the selected channel, so no RX filtering / TX channel tagging needed
+            _bus = ChuangxinBus(
+                cfg.channel_index,
+                bitrate=cfg.bitrate,
+                device_index=cfg.device_index,
+                dll_path=cfg.libpath or settings.chuangxin_libpath,
+            )
+            _tx_channel = None
         else:
             _bus = can.interface.Bus(
                 interface=cfg.interface,
@@ -177,7 +187,7 @@ def get_status() -> CanStatusResponse:
     cfg = _connected_cfg
     channel = None
     if cfg:
-        channel = f"CAN{cfg.channel_index + 1}" if cfg.interface == "zlgcan" else cfg.channel
+        channel = f"CAN{cfg.channel_index + 1}" if cfg.interface in ("zlgcan", "chuangxin") else cfg.channel
     return CanStatusResponse(
         connected=_bus is not None,
         interface=cfg.interface if cfg else None,

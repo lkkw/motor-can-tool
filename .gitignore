@@ -12,6 +12,8 @@ dist/
 # ZLG driver binaries (proprietary; see README "周立功 USBCAN-I / II")
 backend/library/windows/
 backend/library/linux/
+# 创芯 ControlCAN.dll (proprietary; see README "创芯 CANalyst-II")
+backend/library/chuangxin/
 
 # Editors / OS
 .vscode/

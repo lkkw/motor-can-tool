@@ -6,12 +6,12 @@ class CanConnectRequest(BaseModel):
     channel: str = "vcan0"
     bitrate: int = 500000
 
-    # ZLG (interface="zlgcan") only
-    device_type: int = 4  # ZCANDeviceType: 3 = USBCAN-I, 4 = USBCAN-II
+    # Vendor cards: interface="zlgcan" (周立功) or "chuangxin" (创芯)
+    device_type: int = 4  # zlgcan only, ZCANDeviceType: 3 = USBCAN-I, 4 = USBCAN-II
     device_index: int = 0  # which card, when several of the same type are plugged in
     channel_index: int = 0  # 0 = CAN1, 1 = CAN2
-    libpath: str | None = None  # zlgcan library folder; None = settings.zlg_libpath
-    resistance: bool = True  # 120Ω terminal resistor (only on cards that support switching it)
+    libpath: str | None = None  # driver folder; None = settings.zlg_libpath / settings.chuangxin_libpath
+    resistance: bool = True  # zlgcan only: 120Ω terminal resistor (only on cards that support switching it)
 
 
 class CanSendRequest(BaseModel):

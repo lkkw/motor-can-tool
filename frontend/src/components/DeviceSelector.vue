@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRequest } from 'alova/client'
 import { connectCan, disconnectCan, getCanStatus, listPeriodic } from '@/api/can'
 import { useCanStore } from '@/stores/canStore'
@@ -11,7 +11,7 @@ const form = ref({
   interface: 'virtual',
   channel: 'vcan0',
   bitrate: 500000,
-  // ZLG only
+  // Vendor cards (zlgcan / chuangxin)
   device_type: 4,
   device_index: 0,
   channel_index: 0,
@@ -19,7 +19,15 @@ const form = ref({
   resistance: true,
 })
 
-const INTERFACES = ['virtual', 'pcan', 'socketcan', 'kvaser', 'zlgcan', 'usb2can']
+const INTERFACES = [
+  { value: 'virtual', label: 'virtual' },
+  { value: 'pcan', label: 'pcan' },
+  { value: 'socketcan', label: 'socketcan' },
+  { value: 'kvaser', label: 'kvaser' },
+  { value: 'zlgcan', label: 'zlgcan (周立功)' },
+  { value: 'chuangxin', label: 'chuangxin (创芯)' },
+  { value: 'usb2can', label: 'usb2can' },
+]
 const BITRATES = [125000, 250000, 500000, 1000000]
 // ZCANDeviceType values from the zlgcan plugin
 const ZLG_DEVICE_TYPES = [
@@ -28,11 +36,18 @@ const ZLG_DEVICE_TYPES = [
 ]
 
 const isZlg = computed(() => form.value.interface === 'zlgcan')
+// Vendor cards are addressed by device index + CAN1/CAN2 instead of a channel string
+const isVendorCard = computed(() => ['zlgcan', 'chuangxin'].includes(form.value.interface))
+const libpathPlaceholder = computed(() =>
+  isZlg.value ? 'empty = backend/library' : 'empty = backend/library/chuangxin'
+)
+// A path typed for one vendor never applies to the other
+watch(() => form.value.interface, () => { form.value.libpath = '' })
 
 const { send: doConnect, loading: connecting } = useRequest(
   () => connectCan({
     ...form.value,
-    libpath: form.value.libpath.trim() || null,  // empty = backend default (backend/library)
+    libpath: form.value.libpath.trim() || null,  // empty = backend default for this interface
   }),
   { immediate: false }
 )
@@ -131,11 +146,11 @@ const connected = computed(() => canStore.status.connected)
             v-model="form.interface"
             class="w-full bg-bg-primary border border-border rounded px-2 py-1.5 text-sm text-fg focus:outline-none focus:border-orange-500"
           >
-            <option v-for="iface in INTERFACES" :key="iface" :value="iface">{{ iface }}</option>
+            <option v-for="iface in INTERFACES" :key="iface.value" :value="iface.value">{{ iface.label }}</option>
           </select>
         </div>
 
-        <div v-if="!isZlg">
+        <div v-if="!isVendorCard">
           <label class="text-xs text-fg-secondary mb-1 block">Channel</label>
           <input
             v-model="form.channel"
@@ -145,7 +160,7 @@ const connected = computed(() => canStore.status.connected)
         </div>
 
         <template v-else>
-          <div>
+          <div v-if="isZlg">
             <label class="text-xs text-fg-secondary mb-1 block">Device Type</label>
             <select
               v-model.number="form.device_type"
@@ -177,7 +192,7 @@ const connected = computed(() => canStore.status.connected)
             </div>
           </div>
 
-          <label class="flex items-center gap-2 text-xs text-fg-secondary">
+          <label v-if="isZlg" class="flex items-center gap-2 text-xs text-fg-secondary">
             <input v-model="form.resistance" type="checkbox" class="accent-orange-500" />
             120Ω terminal resistor
           </label>
@@ -187,7 +202,7 @@ const connected = computed(() => canStore.status.connected)
             <input
               v-model="form.libpath"
               class="w-full bg-bg-primary border border-border rounded px-2 py-1.5 text-sm text-fg placeholder-fg-faint focus:outline-none focus:border-orange-500"
-              placeholder="empty = backend/library"
+              :placeholder="libpathPlaceholder"
             />
           </div>
         </template>

@@ -49,6 +49,7 @@ pnpm dev
 | socketcan | can0 | Linux SocketCAN |
 | kvaser | 0 | Kvaser 适配器 |
 | zlgcan | 面板中选 CAN1 / CAN2 | 周立功 USBCAN-I / USBCAN-II（见下） |
+| chuangxin | 面板中选 CAN1 / CAN2 | 创芯科技 CANalyst-II / USBCAN-2A / 2C（见下） |
 
 ### 周立功 USBCAN-I / II
 
@@ -67,6 +68,15 @@ backend/library/
 - `zlgcan.dll` 必须是 **64 位**的；ZCANPro 安装目录里的是 32 位，不能用。
 - 连接前先关闭 ZCANPro，同一张卡同时只能被一个程序打开。
 
+### 创芯 CANalyst-II / USBCAN-2A / 2C
+
+通过 ctypes 直接调用创芯自带的 `ControlCAN.dll`（[app/drivers/chuangxin.py](backend/app/drivers/chuangxin.py)），**沿用原厂驱动**，创芯自带的上位机软件不受影响。
+
+- 把创芯驱动包里的 **64 位** `ControlCAN.dll` 放到 `backend/library/chuangxin/`（或在连接面板里填它所在的目录）。DLL 是创芯的专有文件，不随仓库分发。
+- 必须是 64 位的；创芯 Demo / 旧上位机目录里常见的是 32 位版本，不能用，连接时会提示。
+- 支持波特率 5k – 1M（125k / 250k / 500k / 1M 等），使用与周立功相同的 Timing0/Timing1 标准值。
+- 终端电阻在卡上用拨码开关设置。连接前先关闭创芯自带的上位机软件。
+
 ## 项目结构
 
 ```
@@ -79,6 +89,8 @@ motor-can-tool/
 │   │   │   ├── dbc.py           # DBC 上传解析
 │   │   │   ├── can.py           # CAN 连接/发送
 │   │   │   └── sse.py           # SSE 推流
+│   │   ├── drivers/
+│   │   │   └── chuangxin.py     # 创芯 ControlCAN.dll (ctypes)
 │   │   ├── services/
 │   │   │   ├── dbc_service.py   # cantools 封装
 │   │   │   └── can_service.py   # python-can + SSE Queue

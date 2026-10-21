@@ -22,5 +22,8 @@ class Settings(BaseSettings):
     # ZLG zlgcan library folder (contains bitrate.cfg.yaml and windows/x86_64/zlgcan.dll)
     zlg_libpath: str = str(BASE_DIR / "library")
 
+    # 创芯 folder containing the 64-bit ControlCAN.dll (or the DLL path itself)
+    chuangxin_libpath: str = str(BASE_DIR / "library" / "chuangxin")
+
 
 settings = Settings()
